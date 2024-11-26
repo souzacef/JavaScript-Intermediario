@@ -30,4 +30,4 @@ fs.unlink("./files/novo-nome.txt", function (err) {
     if (err) {
         return console.log(`Algo deu errado: ${err}`);
     }
-})
+});
