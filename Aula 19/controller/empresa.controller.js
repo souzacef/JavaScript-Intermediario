@@ -28,23 +28,37 @@ const find = (req,res) => {
     empresas.map( function(valor){
         if(valor.id == id) {
             found = true;
-            return response.send(valor);
+            return res.send(valor);
         }
     });
     if(!found){
-        res.status(404).send({message: "Não foi encontrantrado!"});
+        res.status(404).send({message: "Não foi encontrado!"});
     }
     
 }
 
 const createEmpresa = (req,res) => {
     const empresa = req.body;
-    if(req.body == null) {
-        return res.send({message:"Corpo da mensagem está vazio"});
-
+    if(Object.keys(empresa).length === 0) {
+        return res.status(400).send({message:"Corpo da mensagem está vazio"});
     }
-    empresas.push(empresa)
-    res.send(empresas);
+
+    if(!empresa.id){
+        return res.status(400).send({message:"O campo 'id' não foi encontrado!"});
+    }
+
+    if(!empresa.nome){
+        return res.status(400).send({message:"O campo 'nome' não foi encontrado!"});
+    }
+
+    if(!empresa.numFuncionarios){
+        return res.status(400).send({message:"O campo 'numFuncionarios' não foi encontrado!"});
+    }
+
+    empresa.nacionalidade = "brasileira";
+
+    empresas.push(empresa);
+    res.status(201).send(empresas);
 }
 
 module.exports = {
