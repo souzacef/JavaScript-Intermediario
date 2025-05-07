@@ -61,8 +61,62 @@ const createEmpresa = (req,res) => {
     res.status(201).send(empresas);
 }
 
+const updateEmpresa = (req,res) => {
+    const id = req.params.id;
+    const empresa = req.body;
+    let found = false;
+
+    if(Object.keys(empresa).length === 0) {
+        return res.status(400).send({message:"Corpo da mensagem está vazio"});
+    }
+
+    if(!empresa.id){
+        return res.status(400).send({message:"O campo 'id' não foi encontrado!"});
+    }
+
+    if(!empresa.nome){
+        return res.status(400).send({message:"O campo 'nome' não foi encontrado!"});
+    }
+
+    if(!empresa.numFuncionarios){
+        return res.status(400).send({message:"O campo 'numFuncionarios' não foi encontrado!"});
+    }
+
+    empresas.map( function(valor, index){
+        if(valor.id == id) {
+            found = true;
+            empresas[index] = empresa;
+            return res.send(empresas[index]);
+        }
+    });
+
+    if(!found){
+        res.status(404).send({message: "Não foi encontrado!"});
+    }
+}
+
+const deleteEmpresa = (req,res) => {
+    const id = req.params.id;
+    let found = false;
+
+    empresas.map( function(valor){
+        if(valor.id == id) {
+            found = true;
+            empresas.splice(index,1);
+            return res.send(valor);
+        }
+    });
+
+    if(!found){
+        res.status(404).send({message: "Não foi encontrado!"});
+    }
+    
+}
+
 module.exports = {
     findAllEmpressas,
     createEmpresa,
-    find
+    find,
+    updateEmpresa,
+    deleteEmpresa
 }
